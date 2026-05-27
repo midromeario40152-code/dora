@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FujiDora - Doraemon Cinema Network</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Noto Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+    }
+    /* Tùy chỉnh thanh cuộn siêu mượt */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #020617;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3b82f6;
+    }
+    
+    /* Hiệu ứng tỏa tròn mềm mại khắp trang web (Radial Glowing Orbs) */
+    .glow-bg-1 {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(59, 130, 246, 0) 70%);
+      top: -100px;
+      left: -100px;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(40px);
+    }
+    .glow-bg-2 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, rgba(147, 51, 234, 0) 70%);
+      bottom: 10%;
+      right: -100px;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(50px);
+    }
+    .glow-bg-3 {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(234, 179, 8, 0.08) 0%, rgba(234, 179, 8, 0) 70%);
+      top: 40%;
+      left: 25%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(30px);
+    }
+
+    /* Hiệu ứng nổi bật cho các nút (3D soft emboss shadow) */
+    .btn-3d-glow {
+      box-shadow: 0 4px 15px -3px rgba(59, 130, 246, 0.3), 0 4px 6px -2px rgba(59, 130, 246, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-3d-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -3px rgba(59, 130, 246, 0.5), 0 4px 12px -2px rgba(59, 130, 246, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+    }
+    .btn-3d-glow:active {
+      transform: translateY(1px);
+    }
+
+    /* Nút vàng nổi */
+    .btn-3d-yellow {
+      box-shadow: 0 4px 15px -3px rgba(234, 179, 8, 0.3), 0 4px 6px -2px rgba(234, 179, 8, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-3d-yellow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -3px rgba(234, 179, 8, 0.5), 0 4px 12px -2px rgba(234, 179, 8, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+    }
+    .btn-3d-yellow:active {
+      transform: translateY(1px);
+    }
+
+    /* Nút tối nổi */
+    .btn-3d-dark {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-3d-dark:hover {
+      transform: translateY(-1.5deg);
+      background-color: #1e293b;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6), 0 0 12px rgba(59, 130, 246, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Thiết kế thẻ video và container bóng bẩy */
+    .premium-panel {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white overflow-x-hidden relative">
+
+  <!-- Hiệu ứng tỏa tròn nền trang web -->
+  <div class="glow-bg-1"></div>
+  <div class="glow-bg-2"></div>
+  <div class="glow-bg-3"></div>
+
+  <!-- --- THANH ĐẦU TRANG (HEADER) --- -->
+  <header class="sticky top-0 z-50 bg-slate-900/70 backdrop-blur-md border-b border-slate-800/40 px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <!-- Logo Doraemon từ URL yêu cầu -->
+      <div class="relative w-10 h-10 rounded-full overflow-hidden shadow-[0_0_15px_rgba(59,130,246,0.5)] bg-slate-800 shrink-0">
+        <img 
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO12WiVGQPfijwHrlLimkMzzHgoYM390xkuw&s" 
+          alt="FujiDora Logo" 
+          class="w-full h-full object-cover scale-110"
+        />
+      </div>
+      <div>
+        <h1 class="text-xl sm:text-2xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-yellow-300 flex items-center gap-1">
+          FujiDora
+          <span class="text-[10px] bg-red-500 text-white font-bold px-1.5 py-0.5 rounded-full uppercase tracking-normal shadow-md shadow-red-500/20">Pro</span>
+        </h1>
+        <p class="text-[9px] text-slate-400 uppercase tracking-widest hidden sm:block">Hệ thống video Doraemon chất lượng cao</p>
+      </div>
+    </div>
+
+    <!-- Thanh Tìm Kiếm -->
+    <div class="relative max-w-md w-full mx-4 hidden md:block z-10">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Tìm kiếm phim, bảo bối, nhạc nền..."
+        class="w-full bg-slate-950/80 text-slate-200 pl-10 pr-4 py-2 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all shadow-inner"
+      />
+      <i data-lucide="search" class="absolute left-3.5 top-2.5 w-4.5 h-4.5 text-slate-500"></i>
+    </div>
+
+    <!-- Nút hành động nổi -->
+    <div class="flex items-center space-x-3 z-10">
+      <button 
+        id="btnToggleStorage"
+        class="flex items-center space-x-1.5 px-4 py-1.5 rounded-full text-sm font-semibold btn-3d-dark bg-slate-850 text-slate-200"
+      >
+        <i data-lucide="bookmark" class="w-4 h-4 text-yellow-400"></i>
+        <span class="hidden sm:inline" id="lblStorageMode">Thư viện của bạn</span>
+      </button>
+
+      <button
+        id="btnOpenUpload"
+        class="flex items-center space-x-1.5 bg-gradient-to-r from-blue-600 to-sky-500 text-white px-5 py-1.5 rounded-full text-sm font-bold btn-3d-glow"
+      >
+        <i data-lucide="plus" class="w-4 h-4"></i>
+        <span>Đăng Video</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Thanh tìm kiếm nhanh mobile -->
+  <div class="p-3 bg-slate-900/50 backdrop-blur-sm border-b border-slate-800/40 block md:hidden z-10">
+    <div class="relative w-full">
+      <input
+        type="text"
+        id="searchInputMobile"
+        placeholder="Tìm kiếm tập phim Doraemon..."
+        class="w-full bg-slate-950/80 text-slate-200 pl-10 pr-4 py-2 rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-inner"
+      />
+      <i data-lucide="search" class="absolute left-3.5 top-2.5 w-4.5 h-4.5 text-slate-500"></i>
+    </div>
+  </div>
+
+  <!-- --- GIAO DIỆN CHÍNH --- -->
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 py-6 flex flex-col gap-6 z-10 relative">
+    
+    <!-- Bộ lọc nhanh thể loại -->
+    <div class="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none" id="categoriesContainer">
+      <button class="category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-blue-600 text-white btn-3d-glow" data-category="Tất cả">Tất cả</button>
+      <button class="category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-slate-900/80 text-slate-400 hover:text-slate-100 btn-3d-dark" data-category="Tập ngắn">Tập ngắn</button>
+      <button class="category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-slate-900/80 text-slate-400 hover:text-slate-100 btn-3d-dark" data-category="Tập dài">Tập dài</button>
+      <button class="category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-slate-900/80 text-slate-400 hover:text-slate-100 btn-3d-dark" data-category="Nhạc phim">Nhạc phim</button>
+      <button class="category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-slate-900/80 text-slate-400 hover:text-slate-100 btn-3d-dark" data-category="Đã tải từ máy">Đã tải từ máy</button>
+    </div>
+
+    <!-- KHÔNG CÓ VIDEO - MÀN HÌNH CHÀO MỪNG -->
+    <div id="welcomeScreen" class="hidden premium-panel border-0 rounded-2xl p-8 text-center max-w-2xl mx-auto my-6 relative overflow-hidden">
+      <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
+      <div class="relative z-10">
+        <div class="w-16 h-16 bg-blue-500/15 rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+          <i data-lucide="film" class="w-8 h-8 text-blue-400 animate-pulse"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-100 mb-2">Trình phát vĩnh viễn FujiDora</h3>
+        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+          Chào mừng bạn đến với rạp chiếu phim Doraemon của riêng bạn! Hãy bắt đầu bằng cách nạp một vài video mẫu hoặc chọn ngay một file hoạt hình chất lượng từ máy tính của bạn để lưu trữ vĩnh viễn không bao giờ mất.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <button id="btnLoadSamples" class="w-full sm:w-auto px-6 py-2.5 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold rounded-full flex items-center justify-center space-x-2 btn-3d-yellow">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>Nạp video Doraemon mẫu</span>
+          </button>
+          <button id="btnWelcomeUpload" class="w-full sm:w-auto px-6 py-2.5 bg-slate-800 text-slate-200 font-semibold rounded-full flex items-center justify-center space-x-2 btn-3d-dark">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Tải video từ máy tính</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KHU VỰC PHÁT CHÍNH -->
+    <div id="mainPlayerLayout" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
+      
+      <!-- Cột Trình Phát Video -->
+      <div class="lg:col-span-2 flex flex-col space-y-4" id="videoColumn">
+        
+        <!-- TRÌNH PHÁT VIDEO ĐỘC QUYỀN (CUSTOM VIDEO PLAYER) -->
+        <div id="fujidoraPlayerContainer" class="relative group bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video w-full select-none shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+          
+          <!-- Thẻ Video Gốc -->
+          <video id="mainVideo" class="w-full h-full object-contain" playsinline></video>
+
+          <!-- MENU NGỮ CẢNH CHUỘT PHẢI (RIGHT-CLICK CONTEXT MENU) -->
+          <div id="customContextMenu" class="hidden absolute z-50 bg-slate-900/95 text-slate-100 rounded-xl shadow-2xl py-1.5 w-60 backdrop-blur-md text-xs font-semibold shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+            <div class="px-3 py-1.5 text-[10px] text-slate-500 uppercase tracking-wider border-b border-slate-850 mb-1">
+              FujiDora Player Engine
+            </div>
+            <button id="ctxSaveVideo" class="w-full px-3 py-2 text-left hover:bg-blue-600 hover:text-white flex items-center justify-between transition-colors">
+              <span class="flex items-center gap-2">
+                <i data-lucide="bookmark" class="w-3.5 h-3.5 text-yellow-400"></i>
+                <span>Lưu vào Thư viện cá nhân</span>
+              </span>
+            </button>
+            <button id="ctxDownload" class="w-full px-3 py-2 text-left hover:bg-blue-600 hover:text-white flex items-center gap-2 transition-colors">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Tải video về máy tính</span>
+            </button>
+            <button id="ctxCopyLink" class="w-full px-3 py-2 text-left hover:bg-blue-600 hover:text-white flex items-center gap-2 transition-colors">
+              <i data-lucide="share-2" class="w-3.5 h-3.5 text-sky-400"></i>
+              <span>Sao chép liên kết video</span>
+            </button>
+            <button id="ctxToggleLoop" class="w-full px-3 py-2 text-left hover:bg-blue-600 hover:text-white flex items-center justify-between transition-colors">
+              <span class="flex items-center gap-2">
+                <i data-lucide="music" class="w-3.5 h-3.5 text-pink-400"></i>
+                <span>Chế độ phát lặp lại (Loop)</span>
+              </span>
+              <span id="ctxLoopStatus" class="text-[9px] bg-slate-800 px-1 py-0.2 rounded">Tắt</span>
+            </button>
+            <div class="border-t border-slate-850 my-1"></div>
+            <div class="px-3 py-1 text-[10px] text-slate-500 italic">
+              Lưu trữ vĩnh viễn & Không quảng cáo
+            </div>
+          </div>
+
+          <!-- LỚP PHỦ TIÊU ĐỀ VIDEO KHI HOVER -->
+          <div class="absolute top-0 left-0 w-full p-4 bg-gradient-to-b from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <h4 id="playerVideoTitle" class="text-white font-bold text-sm sm:text-base truncate">Đang tải video...</h4>
+            <p class="text-xs text-blue-400 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Đang phát với âm thanh chất lượng cao
+            </p>
+          </div>
+
+          <!-- BIỂU TƯỢNG PHÁT LỚN CHÍNH GIỮA KHI TẠM DỪNG -->
+          <button id="bigPlayBtn" class="absolute inset-0 m-auto w-16 h-16 rounded-full bg-blue-600/90 text-white flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.5)] hover:scale-110 transition-transform duration-200">
+            <i data-lucide="play" class="w-8 h-8 fill-white ml-1"></i>
+          </button>
+
+          <!-- BẢNG ĐIỀU KHIỂN TINH GỌN, TRONG SUỐT (COMPACT CONTROLS) -->
+          <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/95 via-black/70 to-transparent p-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-300">
+            
+            <!-- Thanh Tiến Trình Phát (Seek bar) -->
+            <div class="flex items-center space-x-2 w-full">
+              <span id="playerCurrentTime" class="text-[10px] text-slate-300 font-mono select-none">00:00</span>
+              <input
+                type="range"
+                id="playerProgress"
+                min="0"
+                value="0"
+                class="flex-1 h-1 rounded-lg appearance-none cursor-pointer bg-slate-700 accent-blue-500 hover:h-1.5 transition-all"
+              />
+              <span id="playerDuration" class="text-[10px] text-slate-300 font-mono select-none">00:00</span>
+            </div>
+
+            <!-- Các nút kiểm soát cốt lõi -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <!-- Play / Pause -->
+                <button id="btnPlayPause" class="text-white hover:text-blue-400 transition-colors drop-shadow">
+                  <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                </button>
+
+                <!-- Âm lượng -->
+                <div class="flex items-center space-x-1.5 group/volume">
+                  <button id="btnMute" class="text-white hover:text-blue-400 transition-colors drop-shadow">
+                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                  </button>
+                  <input
+                    type="range"
+                    id="volumeSlider"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value="0.8"
+                    class="w-14 h-1 bg-slate-700 accent-white rounded-lg appearance-none cursor-pointer group-hover/volume:w-20 transition-all duration-250"
+                  />
+                </div>
+
+                <!-- Nhãn trạng thái đặc biệt -->
+                <span id="playerLoopBadge" class="hidden text-[9px] bg-blue-600 text-white font-bold px-2 py-0.5 rounded-full select-none shadow-[0_0_10px_rgba(59,130,246,0.5)]">
+                  Lặp lại
+                </span>
+              </div>
+
+              <!-- Cụm tính năng bổ sung bên phải -->
+              <div class="flex items-center space-x-4">
+                <!-- Tốc độ phát -->
+                <div class="relative">
+                  <button id="btnSpeed" class="text-white hover:text-blue-400 text-xs font-bold transition-colors bg-slate-900/80 px-2 py-1 rounded-md shadow-md">
+                    1.0x
+                  </button>
+                  <div id="speedMenu" class="hidden absolute bottom-8 right-0 bg-slate-900 border border-slate-800 rounded-lg shadow-2xl p-1.5 flex flex-col space-y-0.5 text-xs w-24 z-50">
+                    <button class="speed-option px-2 py-1 rounded text-left text-slate-350 hover:bg-slate-800" data-speed="0.5">0.5x</button>
+                    <button class="speed-option px-2 py-1 rounded text-left text-slate-350 hover:bg-slate-800" data-speed="0.75">0.75x</button>
+                    <button class="speed-option px-2 py-1 rounded text-left text-blue-400 font-bold bg-slate-800" data-speed="1.0">1.0x</button>
+                    <button class="speed-option px-2 py-1 rounded text-left text-slate-350 hover:bg-slate-800" data-speed="1.25">1.25x</button>
+                    <button class="speed-option px-2 py-1 rounded text-left text-slate-350 hover:bg-slate-800" data-speed="1.5">1.5x</button>
+                    <button class="speed-option px-2 py-1 rounded text-left text-slate-350 hover:bg-slate-800" data-speed="2.0">2.0x</button>
+                  </div>
+                </div>
+
+                <!-- Chế độ rạp phim -->
+                <button id="btnTheatre" class="text-white hover:text-blue-400 transition-colors hidden sm:block drop-shadow" title="Chế độ rạp phim">
+                  <i data-lucide="monitor" class="w-4.5 h-4.5"></i>
+                </button>
+
+                <!-- Toàn màn hình -->
+                <button id="btnFullscreen" class="text-white hover:text-blue-400 transition-colors drop-shadow" title="Toàn màn hình">
+                  <i data-lucide="maximize" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- THÔNG TIN CHI TIẾT VIDEO ĐANG PHÁT -->
+        <div class="premium-panel rounded-2xl p-5 relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl"></div>
+          
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 relative z-10">
+            <div>
+              <span id="infoCategory" class="text-xs bg-blue-500/10 text-blue-400 border-0 font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                Thể loại
+              </span>
+              <h2 id="infoTitle" class="text-xl sm:text-2xl font-black mt-2 text-slate-100 leading-snug">
+                Tiêu đề video đang phát
+              </h2>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-400 mt-2">
+                <span class="flex items-center gap-1"><i data-lucide="eye" class="w-3.5 h-3.5 text-blue-400"></i> <span id="infoViews">0</span> lượt xem</span>
+                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5 text-purple-400"></i> <span id="infoDate">Vừa xong</span></span>
+                <span class="text-slate-300">Đăng bởi: <span id="infoUploader" class="text-blue-400 font-bold">Thành viên FujiDora</span></span>
+              </div>
+            </div>
+
+            <!-- Nút tương tác nổi -->
+            <div class="flex items-center space-x-2 self-start sm:self-center shrink-0">
+              <button id="btnLike" class="flex items-center space-x-1.5 bg-slate-800 text-red-400 px-4 py-2 rounded-full text-sm font-bold transition-all btn-3d-dark border-0">
+                <i data-lucide="heart" class="w-4 h-4 fill-red-400"></i>
+                <span><span id="infoLikes">0</span> Thích</span>
+              </button>
+              <button id="btnBookmark" class="p-2.5 bg-slate-800 text-yellow-400 rounded-full transition-all btn-3d-dark border-0" title="Lưu danh sách">
+                <i data-lucide="bookmark" class="w-5 h-5"></i>
+              </button>
+              <button id="btnDownload" class="p-2.5 bg-slate-800 text-emerald-400 rounded-full transition-all btn-3d-dark border-0" title="Tải xuống tệp video">
+                <i data-lucide="download" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+
+          <hr class="border-slate-800/60 my-4" />
+
+          <div class="relative z-10">
+            <h4 class="text-xs font-bold uppercase text-slate-500 tracking-wider">Tóm tắt nội dung</h4>
+            <p id="infoDesc" class="text-slate-300 text-sm mt-1 leading-relaxed whitespace-pre-wrap">
+              Mô tả chi tiết nội dung của tập phim đang chiếu.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Cột Danh Sách Playlist / Khuyên dùng -->
+      <div class="flex flex-col space-y-4">
+        <div class="premium-panel rounded-2xl p-4 relative overflow-hidden">
+          <div class="absolute -bottom-10 -right-10 w-24 h-24 bg-purple-500/5 rounded-full blur-xl"></div>
+          
+          <div class="flex items-center justify-between mb-4 relative z-10">
+            <h3 class="font-bold text-slate-100 flex items-center gap-2">
+              <i data-lucide="film" class="w-4.5 h-4.5 text-blue-400"></i>
+              <span id="playlistHeader">Đăng tải cộng đồng</span>
+            </h3>
+            <span id="playlistCount" class="text-xs bg-blue-650/25 text-blue-300 px-2.5 py-1 rounded-full font-bold shadow-inner">
+              0 Video
+            </span>
+          </div>
+
+          <!-- Container danh sách phim cuộn -->
+          <div id="playlistContainer" class="space-y-3 max-h-[580px] overflow-y-auto pr-1 relative z-10">
+            <!-- Render động bằng JS -->
+          </div>
+        </div>
+
+        <!-- Mẹo lưu trữ hữu ích -->
+        <div class="premium-panel p-5 rounded-2xl border-0 text-xs text-slate-300 space-y-2 relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/10 to-indigo-900/10 opacity-30"></div>
+          <h5 class="font-bold text-blue-400 flex items-center gap-1.5 relative z-10">
+            <i data-lucide="info" class="w-4 h-4 text-blue-400"></i>
+            Hệ thống lưu trữ FujiDora
+          </h5>
+          <p class="leading-relaxed relative z-10">
+            - <strong>Đã tải từ máy:</strong> Video được lưu trực tiếp bằng cơ sở dữ liệu IndexedDB của trình duyệt giúp bạn có thể mở lên xem lại bất cứ lúc nào không cần mạng.
+          </p>
+          <p class="leading-relaxed relative z-10">
+            - <strong>Tải vĩnh viễn:</strong> Bạn có thể chia sẻ video cho bạn bè xem chung bằng cách đăng URL liên kết công khai.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DANH SÁCH TẤT CẢ VIDEO PHÍA DƯỚI -->
+    <div id="allVideosSection" class="hidden mt-6 relative z-10">
+      <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-5 h-5 text-yellow-400"></i>
+        <span>Đề xuất khám phá</span>
+      </h3>
+      <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Render động bằng JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- --- PHẦN CUỐI TRANG (FOOTER) --- -->
+  <footer class="bg-slate-950/80 backdrop-blur-md border-t border-slate-900/60 py-6 px-4 text-center text-slate-500 text-xs mt-auto relative z-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2 text-slate-400">
+        <span class="text-lg">🐱</span>
+        <span class="font-bold text-slate-300">FujiDora Network © 2026</span>
+      </div>
+      <p class="max-w-md md:text-right leading-relaxed">
+        Nền tảng chia sẻ hoạt hình Doraemon siêu bền vững. Hỗ trợ lưu trữ file trực tiếp từ máy tính cá nhân của bạn.
+      </p>
+    </div>
+  </footer>
+
+  <!-- --- MODAL ĐĂNG KÝ/TẢI LÊN VIDEO MỚI (UPLOAD MODAL) --- -->
+  <div id="uploadModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="premium-panel rounded-2xl w-full max-w-lg p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 border-0">
+      <button id="btnCloseUpload" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <h3 class="text-xl font-bold text-slate-100 flex items-center gap-2 mb-2">
+        <i data-lucide="film" class="text-blue-500 w-5 h-5"></i>
+        <span>Đăng Video mới lên FujiDora</span>
+      </h3>
+      <p class="text-xs text-slate-400 mb-5">
+        Chọn cách tải lên của bạn: Lưu cục bộ vĩnh viễn không giới hạn hoặc chia sẻ liên kết cộng đồng.
+      </p>
+
+      <!-- Tab chọn phương thức tải lên -->
+      <div class="flex border-b border-slate-800 mb-4 text-sm font-semibold">
+        <button id="tabLocalFile" class="flex-1 py-2 text-center text-blue-400 border-b-2 border-blue-500 transition-colors">Tải tệp từ máy tính</button>
+        <button id="tabOnlineUrl" class="flex-1 py-2 text-center text-slate-400 hover:text-slate-255 transition-colors">Đăng liên kết mạng (URL)</button>
+      </div>
+
+      <form id="uploadForm" class="space-y-4">
+        <!-- Input Tải File (Mặc định hiển thị) -->
+        <div id="containerLocalFile">
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Chọn file video từ máy của bạn *</label>
+          <div class="relative group flex flex-col items-center justify-center border-2 border-dashed border-slate-800 hover:border-blue-500/50 rounded-xl p-6 bg-slate-950/80 cursor-pointer transition-all">
+            <input type="file" id="videoFileInput" accept="video/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+            <i data-lucide="download" class="w-8 h-8 text-slate-500 group-hover:text-blue-400 mb-2 transition-colors"></i>
+            <span id="fileInputLabel" class="text-xs text-slate-400 font-semibold text-center truncate max-w-xs">Nhấp để chọn hoặc kéo thả tệp video tại đây</span>
+            <span class="text-[9px] text-slate-500 mt-1">Hỗ trợ MP4, WebM, MKV, AVI, v.v...</span>
+          </div>
+        </div>
+
+        <!-- Input URL Trực tuyến (Mặc định ẩn) -->
+        <div id="containerOnlineUrl" class="hidden">
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Liên kết video trực tiếp (URL MP4/M3U8) *</label>
+          <input
+            type="url"
+            id="videoUrlInput"
+            placeholder="https://example.com/video-doraemon.mp4"
+            class="w-full bg-slate-950 text-slate-200 px-4 py-2.5 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-mono shadow-inner"
+          />
+        </div>
+
+        <!-- Các thông tin chung -->
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Tiêu đề video *</label>
+          <input
+            type="text"
+            id="videoTitleInput"
+            required
+            placeholder="Ví dụ: Doraemon - Bản tình ca trời xanh đầy xúc động"
+            class="w-full bg-slate-950 text-slate-200 px-4 py-2.5 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-inner"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Thể loại</label>
+            <select id="videoCategoryInput" class="w-full bg-slate-950 text-slate-200 px-3 py-2.5 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-inner">
+              <option value="Tập ngắn">Tập ngắn</option>
+              <option value="Tập dài">Tập dài</option>
+              <option value="Nhạc phim">Nhạc phim</option>
+              <option value="Đã tải từ máy">Đã tải từ máy</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Người đăng</label>
+            <input
+              type="text"
+              id="uploaderNameInput"
+              placeholder="Biệt danh của bạn"
+              class="w-full bg-slate-950 text-slate-200 px-3 py-2.5 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-inner"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Mô tả ngắn gọn</label>
+          <textarea
+            id="videoDescInput"
+            rows="3"
+            placeholder="Kể về bảo bối xuất hiện trong tập phim này nhé..."
+            class="w-full bg-slate-950 text-slate-200 px-4 py-2.5 rounded-xl border-0 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-inner"
+          ></textarea>
+        </div>
+
+        <!-- Nút Gửi -->
+        <div class="pt-4 flex items-center justify-end space-x-3 border-t border-slate-800">
+          <button
+            type="button"
+            id="btnCancelUpload"
+            class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 font-semibold rounded-full text-sm transition-all btn-3d-dark"
+          >
+            Hủy bỏ
+          </button>
+          <button
+            type="submit"
+            id="btnSubmitVideo"
+            class="px-5 py-2 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-500 text-white font-bold rounded-full text-sm transition-all btn-3d-glow flex items-center space-x-1.5"
+          >
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Đăng video ngay</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- --- TOAST THÔNG BÁO --- -->
+  <div id="toastNotification" class="hidden fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-5 duration-250">
+    <div class="bg-slate-900 border border-slate-800/60 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] px-4 py-3 flex items-center space-x-2 text-sm font-bold min-w-[280px]">
+      <span class="text-base" id="toastIcon">🔔</span>
+      <span id="toastMessage" class="text-slate-100">Thông báo từ FujiDora</span>
+    </div>
+  </div>
+
+  <!-- --- SCRIPT CHÍNH --- -->
+  <script type="module">
+    // Nhúng các Firebase SDKs phiên bản 11.6.1
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, collection, addDoc, deleteDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // --- KHAI BÁO BIẾN TOÀN CỤC & INIT FIREBASE ---
+    const firebaseConfig = JSON.parse(__firebase_config);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'fujidora-app';
+
+    // Trạng thái ứng dụng
+    let user = null;
+    let userId = null;
+    let allVideos = [];
+    let bookmarks = [];
+    let currentVideo = null;
+    let uploadMode = 'file'; // 'file' hoặc 'url'
+    let currentTab = 'home'; // 'home' hoặc 'bookmarks'
+    let activeCategory = 'Tất cả';
+
+    // --- TRÌNH QUẢN LÝ CƠ SỞ DỮ LIỆU CỤC BỘ INDEXEDDB (Để lưu file video cực lớn) ---
+    const DB_NAME = "FujiDoraLocalDB";
+    const STORE_NAME = "local_videos";
+    let localDB = null;
+
+    function initIndexedDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, { keyPath: "id" });
+          }
+        };
+        request.onsuccess = (e) => {
+          localDB = e.target.result;
+          resolve(localDB);
+        };
+        request.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    function saveLocalVideoFile(id, videoBlob) {
+      return new Promise((resolve, reject) => {
+        if (!localDB) return reject("Database not initialized");
+        const transaction = localDB.transaction([STORE_NAME], "readwrite");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.put({ id: id, blob: videoBlob });
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function getLocalVideoBlob(id) {
+      return new Promise((resolve, reject) => {
+        if (!localDB) return reject("Database not initialized");
+        const transaction = localDB.transaction([STORE_NAME], "readonly");
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.get(id);
+        request.onsuccess = (e) => resolve(e.target.result ? e.target.result.blob : null);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- VIDEO DORAEMON MẪU CHẤT LƯỢNG CAO ---
+    const SAMPLE_VIDEOS = [
+      {
+        title: "[FujiDora Official] Nobita và Bản Tình Ca Trời Xanh - Nhạc nền 3D",
+        description: "Hòa âm ánh sáng và âm thanh vòm đỉnh cao đưa bạn trở về những kỉ niệm thời thơ ấu đẹp nhất cùng Doraemon.",
+        url: "https://assets.mixkit.co/videos/preview/mixkit-fantasy-style-cartoon-castle-with-sparkles-42848-large.mp4",
+        category: "Nhạc phim",
+        views: 24500,
+        likes: 1850,
+        duration: "01:24",
+        createdAt: new Date().toISOString(),
+        uploader: "Hệ thống FujiDora",
+        isSample: true
+      },
+      {
+        title: "Doraemon và hành tinh động vật diệu kỳ - Tập đặc biệt",
+        description: "Bảo bối thần kì đưa Nobita và Doraemon lạc vào xử sở muông thú biết nói đầy hấp dẫn.",
+        url: "https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-background-1611-large.mp4",
+        category: "Nhạc phim",
+        views: 18900,
+        likes: 1240,
+        duration: "00:45",
+        createdAt: new Date().toISOString(),
+        uploader: "Hệ thống FujiDora",
+        isSample: true
+      }
+    ];
+
+    // --- KHỞI CHẠY GIAO DIỆN KHI SẴN SÀNG ---
+    window.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+      await initIndexedDB();
+      initAppAuth();
+      setupDomEvents();
+    });
+
+    // --- 1. XÁC THỰC FIREBASE (RULE 3) ---
+    async function initAppAuth() {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+      } catch (err) {
+        console.error("Lỗi Auth: ", err);
+      }
+
+      onAuthStateChanged(auth, (usr) => {
+        if (usr) {
+          user = usr;
+          userId = usr.uid;
+          // Lắng nghe dữ liệu
+          listenToVideos();
+          listenToBookmarks();
+        }
+      });
+    }
+
+    // --- 2. LẮNG NGHE DỮ LIỆU ĐÁM MÂY (Firestore) ---
+    function listenToVideos() {
+      if (!user) return;
+      const videosCollection = collection(db, 'artifacts', appId, 'public', 'data', 'videos');
+      
+      onSnapshot(videosCollection, (snapshot) => {
+        const list = [];
+        snapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        // Sắp xếp thời gian tạo mới nhất bằng JS (RULE 2 - No Compound / Complex Queries)
+        list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        allVideos = list;
+        
+        renderApp();
+      }, (err) => {
+        console.error("Lỗi lắng nghe video: ", err);
+      });
+    }
+
+    function listenToBookmarks() {
+      if (!user) return;
+      const bookmarksCollection = collection(db, 'artifacts', appId, 'users', userId, 'bookmarks');
+      
+      onSnapshot(bookmarksCollection, (snapshot) => {
+        const list = [];
+        snapshot.forEach((doc) => {
+          list.push({ bookmarkDocId: doc.id, ...doc.data() });
+        });
+        bookmarks = list;
+        
+        updateBookmarkUI();
+      }, (err) => {
+        console.error("Lỗi lấy Bookmark: ", err);
+      });
+    }
+
+    // --- 3. ĐIỀU KHIỂN GIAO DIỆN CHÍNH (RENDER) ---
+    function renderApp() {
+      const searchVal = document.getElementById('searchInput').value.toLowerCase() || 
+                        document.getElementById('searchInputMobile').value.toLowerCase();
+      
+      // Lọc video theo danh mục & từ khóa tìm kiếm
+      const dataset = currentTab === 'home' ? allVideos : bookmarks;
+      const filtered = dataset.filter(video => {
+        const matchesCategory = (activeCategory === 'Tất cả') || (video.category === activeCategory);
+        const matchesSearch = video.title.toLowerCase().includes(searchVal) || 
+                              video.description.toLowerCase().includes(searchVal);
+        return matchesCategory && matchesSearch;
+      });
+
+      const welcomeScreen = document.getElementById('welcomeScreen');
+      const mainPlayerLayout = document.getElementById('mainPlayerLayout');
+      const allVideosSection = document.getElementById('allVideosSection');
+
+      if (allVideos.length === 0) {
+        welcomeScreen.classList.remove('hidden');
+        mainPlayerLayout.classList.add('hidden');
+        allVideosSection.classList.add('hidden');
+        return;
+      }
+
+      welcomeScreen.classList.add('hidden');
+      mainPlayerLayout.classList.remove('hidden');
+      allVideosSection.classList.remove('hidden');
+
+      // Chọn video đang phát mặc định
+      if (!currentVideo && allVideos.length > 0) {
+        setVideoActive(allVideos[0]);
+      }
+
+      // Render danh sách Playlist bên phải
+      renderPlaylist(filtered);
+
+      // Render lưới video đề xuất ở dưới
+      renderVideoGrid(allVideos);
+    }
+
+    async function setVideoActive(video) {
+      currentVideo = video;
+      
+      // Cập nhật mô tả video trên trang web
+      document.getElementById('infoTitle').textContent = video.title;
+      document.getElementById('playerVideoTitle').textContent = video.title;
+      document.getElementById('infoDesc').textContent = video.description;
+      document.getElementById('infoCategory').textContent = video.category;
+      document.getElementById('infoViews').textContent = (video.views || 0).toLocaleString();
+      document.getElementById('infoLikes').textContent = (video.likes || 0).toLocaleString();
+      document.getElementById('infoUploader').textContent = video.uploader || "Thành viên FujiDora";
+      document.getElementById('infoDate').textContent = new Date(video.createdAt).toLocaleDateString('vi-VN');
+
+      const videoElement = document.getElementById('mainVideo');
+      
+      // Kiểm tra xem video này là video file cục bộ từ máy tính
+      if (video.isLocalFile) {
+        try {
+          const blob = await getLocalVideoBlob(video.id);
+          if (blob) {
+            const blobUrl = URL.createObjectURL(blob);
+            videoElement.src = blobUrl;
+          } else {
+            showToast("Không tìm thấy file video trong IndexedDB của bạn!", "error");
+            videoElement.src = video.url || "";
+          }
+        } catch (e) {
+          showToast("Lỗi nạp tệp video!", "error");
+        }
+      } else {
+        videoElement.src = video.url || "";
+      }
+
+      videoElement.load();
+      resetPlayerControls();
+      updateBookmarkUI();
+
+      // Cập nhật lượt xem lên Firestore (tự động)
+      if (!video.isLocalFile && video.id) {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'videos', video.id);
+        updateDoc(docRef, { views: (video.views || 0) + 1 }).catch(() => {});
+      }
+    }
+
+    function renderPlaylist(videosToRender) {
+      const container = document.getElementById('playlistContainer');
+      document.getElementById('playlistCount').textContent = `${videosToRender.length} Video`;
+      container.innerHTML = '';
+
+      if (videosToRender.length === 0) {
+        container.innerHTML = `<p class="text-center text-slate-500 py-6 text-sm">Không có video phù hợp.</p>`;
+        return;
+      }
+
+      videosToRender.forEach(vid => {
+        const isActive = currentVideo && currentVideo.id === vid.id;
+        const div = document.createElement('div');
+        div.className = `group flex space-x-3 p-2.5 rounded-xl cursor-pointer transition-all border-0 ${
+          isActive ? 'bg-blue-950/40 shadow-lg shadow-blue-500/10' : 'bg-slate-950/65 hover:bg-slate-900/80 shadow-md'
+        }`;
+        
+        div.innerHTML = `
+          <div class="relative w-28 h-16 rounded-lg bg-slate-900 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+            <span class="text-xl">🔔</span>
+            <div class="absolute bottom-1 right-1 text-[9px] bg-black/80 px-1 rounded font-mono text-slate-300">
+              ${vid.duration || "02:00"}
+            </div>
+            ${isActive ? `
+              <div class="absolute inset-0 bg-blue-500/10 flex items-center justify-center">
+                <i data-lucide="volume-2" class="w-4 h-4 text-blue-400"></i>
+              </div>
+            ` : ''}
+          </div>
+          <div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+            <h4 class="text-xs sm:text-sm font-bold text-slate-200 line-clamp-2 leading-snug group-hover:text-blue-400 transition-colors">
+              ${vid.title}
+            </h4>
+            <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400">
+              <span class="truncate max-w-[80px]">${vid.uploader || 'Ẩn danh'}</span>
+              <span class="bg-slate-800 px-1.5 py-0.2 rounded text-slate-300">${vid.category}</span>
+            </div>
+          </div>
+        `;
+        
+        div.addEventListener('click', () => setVideoActive(vid));
+        container.appendChild(div);
+      });
+      lucide.createIcons();
+    }
+
+    function renderVideoGrid(videosToRender) {
+      const grid = document.getElementById('videoGrid');
+      grid.innerHTML = '';
+
+      videosToRender.forEach(vid => {
+        const card = document.createElement('div');
+        card.className = "bg-slate-900/60 rounded-2xl overflow-hidden hover:shadow-[0_10px_30px_rgba(59,130,246,0.15)] transition-all group flex flex-col justify-between p-1.5 premium-panel";
+        
+        card.innerHTML = `
+          <div class="relative aspect-video w-full bg-slate-950 rounded-xl flex items-center justify-center cursor-pointer overflow-hidden shadow-inner">
+            <span class="text-4xl group-hover:scale-110 transition-transform">🐱</span>
+            <div class="absolute inset-0 bg-black/25 group-hover:bg-transparent transition-colors"></div>
+            <span class="absolute bottom-2 right-2 bg-slate-950/85 text-[10px] text-slate-300 px-1.5 py-0.5 rounded font-mono">
+              ${vid.duration || "01:30"}
+            </span>
+            <div class="absolute inset-0 m-auto w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg shadow-blue-500/50">
+              <i data-lucide="play" class="w-5 h-5 fill-white ml-0.5"></i>
+            </div>
+          </div>
+          <div class="p-3.5 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[9px] font-bold text-blue-400 bg-blue-500/10 px-2.5 py-0.5 rounded-full uppercase">
+                  ${vid.category}
+                </span>
+                <span class="text-[10px] text-slate-550 flex items-center gap-1">
+                  <i data-lucide="eye" class="w-3 h-3 text-blue-500"></i> ${(vid.views || 0).toLocaleString()}
+                </span>
+              </div>
+              <h4 class="font-bold text-slate-200 hover:text-blue-400 transition-colors text-sm sm:text-base cursor-pointer line-clamp-2 leading-snug">
+                ${vid.title}
+              </h4>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/50 flex items-center justify-between">
+              <span class="text-xs text-slate-400 truncate max-w-[120px]">${vid.uploader || 'Ẩn danh'}</span>
+              <div class="flex items-center space-x-1">
+                <button class="grid-btn-bookmark p-1.5 text-slate-400 hover:text-yellow-400 transition-colors"><i data-lucide="bookmark" class="w-4 h-4"></i></button>
+                <button class="grid-btn-download p-1.5 text-slate-400 hover:text-emerald-400 transition-colors"><i data-lucide="download" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Gắn sự kiện click
+        card.querySelector('.relative').addEventListener('click', () => setVideoActive(vid));
+        card.querySelector('h4').addEventListener('click', () => setVideoActive(vid));
+        card.querySelector('.grid-btn-bookmark').addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleBookmark(vid);
+        });
+        card.querySelector('.grid-btn-download').addEventListener('click', (e) => {
+          e.stopPropagation();
+          downloadVideo(vid);
+        });
+
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    function updateBookmarkUI() {
+      const btn = document.getElementById('btnBookmark');
+      if (!btn || !currentVideo) return;
+      const isBookmarked = bookmarks.some(b => b.id === currentVideo.id);
+      
+      if (isBookmarked) {
+        btn.classList.add('bg-yellow-500', 'text-slate-950');
+        btn.classList.remove('bg-slate-800', 'text-slate-200');
+        btn.innerHTML = `<i data-lucide="check-square" class="w-5 h-5"></i>`;
+      } else {
+        btn.classList.remove('bg-yellow-500', 'text-slate-950');
+        btn.classList.add('bg-slate-800', 'text-slate-200');
+        btn.innerHTML = `<i data-lucide="bookmark" class="w-5 h-5"></i>`;
+      }
+      lucide.createIcons();
+    }
+
+    // --- 4. CÁC TÍNH NĂNG TƯƠNG TÁC CHÍNH ---
+    async function toggleBookmark(video) {
+      if (!user) return;
+      const isBookmarked = bookmarks.some(b => b.id === video.id);
+      const userBookmarksRef = collection(db, 'artifacts', appId, 'users', userId, 'bookmarks');
+
+      if (isBookmarked) {
+        const item = bookmarks.find(b => b.id === video.id);
+        if (item) {
+          const docRef = doc(db, 'artifacts', appId, 'users', userId, 'bookmarks', item.bookmarkDocId);
+          await deleteDoc(docRef);
+          showToast("Đã xóa khỏi thư viện cá nhân", "info");
+        }
+      } else {
+        await addDoc(userBookmarksRef, video);
+        showToast("Đã thêm vào thư viện cá nhân thành công!", "success");
+      }
+    }
+
+    function downloadVideo(video) {
+      if (video.isLocalFile) {
+        getLocalVideoBlob(video.id).then(blob => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            triggerFileDownload(url, video.title);
+          } else {
+            showToast("Lỗi tìm kiếm video trên máy", "error");
+          }
+        });
+      } else {
+        if (!video.url) return;
+        triggerFileDownload(video.url, video.title);
+      }
+    }
+
+    function triggerFileDownload(url, title) {
+      showToast("Đang chuẩn bị tải xuống file...", "info");
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title || 'fujidora-video'}.mp4`;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function copyVideoLink(url) {
+      const el = document.createElement('input');
+      el.value = url || window.location.href;
+      document.body.appendChild(el);
+      el.select();
+      try {
+        document.execCommand('copy');
+        showToast("Đã sao chép liên kết video!", "success");
+      } catch (e) {
+        showToast("Không thể sao chép liên kết", "error");
+      }
+      document.body.removeChild(el);
+    }
+
+    async function handleLike() {
+      if (!currentVideo || !currentVideo.id || currentVideo.isLocalFile) return;
+      try {
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'videos', currentVideo.id);
+        const newLikes = (currentVideo.likes || 0) + 1;
+        await updateDoc(docRef, { likes: newLikes });
+        currentVideo.likes = newLikes;
+        document.getElementById('infoLikes').textContent = newLikes.toLocaleString();
+        showToast("Tuyệt vời! Bạn đã thích video này.", "success");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Nạp các mẫu Doraemon ban đầu
+    async function loadSamples() {
+      if (!user) return;
+      try {
+        const videosCollection = collection(db, 'artifacts', appId, 'public', 'data', 'videos');
+        for (const sample of SAMPLE_VIDEOS) {
+          await addDoc(videosCollection, sample);
+        }
+        showToast("Nạp tệp video Doraemon mẫu chất lượng cao thành công!", "success");
+      } catch (e) {
+        showToast("Lỗi nạp mẫu: " + e.message, "error");
+      }
+    }
+
+    // --- 5. TẤT CẢ CÁC ĐIỀU KHIỂN TRÌNH PHÁT CUSTOM (FUJIDORA PLAYER) ---
+    const video = document.getElementById('mainVideo');
+    const container = document.getElementById('fujidoraPlayerContainer');
+    const bigPlayBtn = document.getElementById('bigPlayBtn');
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const btnMute = document.getElementById('btnMute');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const playerProgress = document.getElementById('playerProgress');
+    const playerCurrentTime = document.getElementById('playerCurrentTime');
+    const playerDuration = document.getElementById('playerDuration');
+    const btnSpeed = document.getElementById('btnSpeed');
+    const speedMenu = document.getElementById('speedMenu');
+    const btnTheatre = document.getElementById('btnTheatre');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const playerLoopBadge = document.getElementById('playerLoopBadge');
+
+    let customContextMenu = document.getElementById('customContextMenu');
+
+    function resetPlayerControls() {
+      video.pause();
+      bigPlayBtn.classList.remove('hidden');
+      btnPlayPause.innerHTML = `<i data-lucide="play" class="w-5 h-5 fill-current"></i>`;
+      playerProgress.value = 0;
+      playerCurrentTime.textContent = "00:00";
+      playerDuration.textContent = "00:00";
+      lucide.createIcons();
+    }
+
+    function togglePlay() {
+      if (video.paused) {
+        video.play();
+        bigPlayBtn.classList.add('hidden');
+        btnPlayPause.innerHTML = `<i data-lucide="pause" class="w-5 h-5 fill-current"></i>`;
+      } else {
+        video.pause();
+        bigPlayBtn.classList.remove('hidden');
+        btnPlayPause.innerHTML = `<i data-lucide="play" class="w-5 h-5 fill-current"></i>`;
+      }
+      lucide.createIcons();
+    }
+
+    bigPlayBtn.addEventListener('click', togglePlay);
+    btnPlayPause.addEventListener('click', togglePlay);
+    video.addEventListener('click', togglePlay);
+
+    video.addEventListener('timeupdate', () => {
+      const cur = video.currentTime;
+      const dur = video.duration || 0;
+      playerProgress.value = cur;
+      playerCurrentTime.textContent = formatTime(cur);
+      if (dur) {
+        playerProgress.max = dur;
+        playerDuration.textContent = formatTime(dur);
+      }
+    });
+
+    video.addEventListener('loadedmetadata', () => {
+      playerProgress.max = video.duration || 100;
+      playerDuration.textContent = formatTime(video.duration || 0);
+    });
+
+    playerProgress.addEventListener('input', (e) => {
+      video.currentTime = e.target.value;
+    });
+
+    // Âm lượng
+    btnMute.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (video.muted) {
+        btnMute.innerHTML = `<i data-lucide="volume-x" class="w-5 h-5"></i>`;
+        volumeSlider.value = 0;
+      } else {
+        btnMute.innerHTML = `<i data-lucide="volume-2" class="w-5 h-5"></i>`;
+        volumeSlider.value = video.volume;
+      }
+      lucide.createIcons();
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      const val = e.target.value;
+      video.volume = val;
+      video.muted = (val == 0);
+      if (video.muted) {
+        btnMute.innerHTML = `<i data-lucide="volume-x" class="w-5 h-5"></i>`;
+      } else {
+        btnMute.innerHTML = `<i data-lucide="volume-2" class="w-5 h-5"></i>`;
+      }
+      lucide.createIcons();
+    });
+
+    // Tốc độ phát
+    btnSpeed.addEventListener('click', (e) => {
+      e.stopPropagation();
+      speedMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.speed-option').forEach(opt => {
+      opt.addEventListener('click', (e) => {
+        const speed = parseFloat(e.target.dataset.speed);
+        video.playbackRate = speed;
+        btnSpeed.textContent = `${speed}x`;
+        speedMenu.classList.add('hidden');
+        
+        // Cập nhật class active
+        document.querySelectorAll('.speed-option').forEach(o => {
+          o.className = "speed-option px-2 py-1 rounded text-left text-slate-350 hover:bg-slate-800";
+        });
+        e.target.className = "speed-option px-2 py-1 rounded text-left text-blue-400 font-bold bg-slate-800";
+      });
+    });
+
+    // Rạp phim
+    btnTheatre.addEventListener('click', () => {
+      const isTheatre = document.getElementById('mainPlayerLayout').classList.toggle('grid-cols-1');
+      document.getElementById('mainPlayerLayout').classList.toggle('lg:grid-cols-3');
+      document.getElementById('videoColumn').classList.toggle('lg:col-span-2');
+      btnTheatre.classList.toggle('text-blue-500');
+    });
+
+    // Toàn màn hình
+    btnFullscreen.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        btnFullscreen.innerHTML = `<i data-lucide="minimize" class="w-5 h-5"></i>`;
+      } else {
+        btnFullscreen.innerHTML = `<i data-lucide="maximize" class="w-5 h-5"></i>`;
+      }
+      lucide.createIcons();
+    });
+
+    // --- MENU CHUỘT PHẢI ĐỘC QUYỀN (CUSTOM CONTEXT MENU) ---
+    container.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      customContextMenu.style.left = `${x}px`;
+      customContextMenu.style.top = `${y}px`;
+      customContextMenu.classList.remove('hidden');
+
+      // Đồng bộ nhãn Loop trong context menu
+      document.getElementById('ctxLoopStatus').textContent = video.loop ? "Bật" : "Tắt";
+    });
+
+    document.addEventListener('click', () => {
+      customContextMenu.classList.add('hidden');
+      speedMenu.classList.add('hidden');
+    });
+
+    document.getElementById('ctxSaveVideo').addEventListener('click', () => {
+      if (currentVideo) toggleBookmark(currentVideo);
+    });
+
+    document.getElementById('ctxDownload').addEventListener('click', () => {
+      if (currentVideo) downloadVideo(currentVideo);
+    });
+
+    document.getElementById('ctxCopyLink').addEventListener('click', () => {
+      if (currentVideo) copyVideoLink(currentVideo.url);
+    });
+
+    document.getElementById('ctxToggleLoop').addEventListener('click', () => {
+      video.loop = !video.loop;
+      playerLoopBadge.classList.toggle('hidden', !video.loop);
+      showToast(video.loop ? "Đã bật chế độ phát lặp lại" : "Đã tắt chế độ phát lặp lại", "info");
+    });
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    // --- 6. XỬ LÝ LỰA CHỌN TẢI FILE / CHỌN FILE TỪ MÁY TÍNH ---
+    const tabLocalFile = document.getElementById('tabLocalFile');
+    const tabOnlineUrl = document.getElementById('tabOnlineUrl');
+    const containerLocalFile = document.getElementById('containerLocalFile');
+    const containerOnlineUrl = document.getElementById('containerOnlineUrl');
+    const videoFileInput = document.getElementById('videoFileInput');
+    const fileInputLabel = document.getElementById('fileInputLabel');
+
+    tabLocalFile.addEventListener('click', () => {
+      uploadMode = 'file';
+      tabLocalFile.className = "flex-1 py-2 text-center text-blue-400 border-b-2 border-blue-500 transition-colors";
+      tabOnlineUrl.className = "flex-1 py-2 text-center text-slate-400 hover:text-slate-200 transition-colors";
+      containerLocalFile.classList.remove('hidden');
+      containerOnlineUrl.classList.add('hidden');
+    });
+
+    tabOnlineUrl.addEventListener('click', () => {
+      uploadMode = 'url';
+      tabOnlineUrl.className = "flex-1 py-2 text-center text-blue-400 border-b-2 border-blue-500 transition-colors";
+      tabLocalFile.className = "flex-1 py-2 text-center text-slate-400 hover:text-slate-200 transition-colors";
+      containerOnlineUrl.classList.remove('hidden');
+      containerLocalFile.classList.add('hidden');
+    });
+
+    videoFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        fileInputLabel.innerHTML = `Đã chọn: <strong class="text-blue-400">${file.name}</strong> (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
+        // Tự động điền tiêu đề từ tên file
+        const cleanedName = file.name.replace(/\.[^/.]+$/, "");
+        document.getElementById('videoTitleInput').value = cleanedName;
+      }
+    });
+
+    // --- 7. ĐĂNG KÝ VIDEO MỚI (LƯU TRỮ VĨNH VIỄN) ---
+    const uploadForm = document.getElementById('uploadForm');
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('videoTitleInput').value.trim();
+      const category = document.getElementById('videoCategoryInput').value;
+      const uploader = document.getElementById('uploaderNameInput').value.trim() || "Thành viên FujiDora";
+      const description = document.getElementById('videoDescInput').value.trim() || "Tập phim Doraemon hấp dẫn được lưu trữ trên FujiDora.";
+
+      if (!title) {
+        showToast("Vui lòng điền tiêu đề!", "error");
+        return;
+      }
+
+      showToast("Đang khởi tạo lưu trữ...", "info");
+
+      try {
+        if (uploadMode === 'file') {
+          // Xử lý tệp trực tiếp từ máy tính
+          const file = videoFileInput.files[0];
+          if (!file) {
+            showToast("Vui lòng chọn một file video trước!", "error");
+            return;
+          }
+
+          // Sinh mã ID duy nhất cho video cục bộ này
+          const videoId = "local_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+          
+          // 1. Lưu blob video vào IndexedDB (Hệ thống lưu trữ cực mạnh vĩnh viễn)
+          await saveLocalVideoFile(videoId, file);
+
+          // 2. Đồng bộ siêu dữ liệu Metadata lên đám mây Firestore để lưu trữ bền vững
+          const videoMetadata = {
+            id: videoId,
+            title: title,
+            category: "Đã tải từ máy",
+            uploader: uploader,
+            description: description,
+            duration: "Máy tính",
+            views: 1,
+            likes: 0,
+            createdAt: new Date().toISOString(),
+            isLocalFile: true // Cờ đánh dấu để load từ IndexedDB khi mở
+          };
+
+          // Ghi vào Firestore
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'videos', videoId), videoMetadata);
+          showToast("Đã lưu video cục bộ vĩnh viễn thành công!", "success");
+
+        } else {
+          // Xử lý bằng URL Trực tuyến
+          const url = document.getElementById('videoUrlInput').value.trim();
+          if (!url) {
+            showToast("Vui lòng cung cấp link URL video!", "error");
+            return;
+          }
+
+          const videosCollection = collection(db, 'artifacts', appId, 'public', 'data', 'videos');
+          const videoMetadata = {
+            title: title,
+            category: category,
+            uploader: uploader,
+            description: description,
+            url: url,
+            duration: "Đám mây",
+            views: 1,
+            likes: 0,
+            createdAt: new Date().toISOString(),
+            isLocalFile: false
+          };
+
+          await addDoc(videosCollection, videoMetadata);
+          showToast("Đăng tải liên kết vĩnh viễn thành công!", "success");
+        }
+
+        // Đóng modal và reset form
+        document.getElementById('uploadModal').classList.add('hidden');
+        uploadForm.reset();
+        fileInputLabel.textContent = "Nhấp để chọn hoặc kéo thả tệp video tại đây";
+      } catch (err) {
+        showToast("Đã xảy ra lỗi: " + err.message, "error");
+        console.error(err);
+      }
+    });
+
+    // --- 8. CÁC SỰ KIỆN KHÁC TRÊN DOM ---
+    function setupDomEvents() {
+      // Đóng mở modal tải lên
+      document.getElementById('btnOpenUpload').addEventListener('click', () => {
+        document.getElementById('uploadModal').classList.remove('hidden');
+      });
+      document.getElementById('btnWelcomeUpload').addEventListener('click', () => {
+        document.getElementById('uploadModal').classList.remove('hidden');
+      });
+      document.getElementById('btnCloseUpload').addEventListener('click', () => {
+        document.getElementById('uploadModal').classList.add('hidden');
+      });
+      document.getElementById('btnCancelUpload').addEventListener('click', () => {
+        document.getElementById('uploadModal').classList.add('hidden');
+      });
+
+      // Lọc theo danh mục
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.category-btn').forEach(b => {
+            b.className = "category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-slate-900/80 text-slate-400 hover:text-slate-100 btn-3d-dark";
+          });
+          e.target.className = "category-btn px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-full shrink-0 transition-all bg-blue-600 text-white btn-3d-glow";
+          
+          activeCategory = e.target.dataset.category;
+          renderApp();
+        });
+      });
+
+      // Tìm kiếm thời gian thực
+      document.getElementById('searchInput').addEventListener('input', renderApp);
+      document.getElementById('searchInputMobile').addEventListener('input', renderApp);
+
+      // Thay đổi bộ lưu trữ hiển thị (Công đồng / Cá nhân)
+      document.getElementById('btnToggleStorage').addEventListener('click', () => {
+        if (currentTab === 'home') {
+          currentTab = 'bookmarks';
+          document.getElementById('lblStorageMode').textContent = "Danh sách yêu thích";
+          document.getElementById('btnToggleStorage').className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all bg-yellow-500 text-slate-950 btn-3d-yellow";
+          document.getElementById('playlistHeader').textContent = "Yêu thích của bạn";
+        } else {
+          currentTab = 'home';
+          document.getElementById('lblStorageMode').textContent = "Thư viện của bạn";
+          document.getElementById('btnToggleStorage').className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all bg-slate-850 text-slate-200 btn-3d-dark";
+          document.getElementById('playlistHeader').textContent = "Đăng tải cộng đồng";
+        }
+        renderApp();
+      });
+
+      // Nhấp nút tương tác dưới Video
+      document.getElementById('btnLike').addEventListener('click', handleLike);
+      document.getElementById('btnBookmark').addEventListener('click', () => {
+        if (currentVideo) toggleBookmark(currentVideo);
+      });
+      document.getElementById('btnDownload').addEventListener('click', () => {
+        if (currentVideo) downloadVideo(currentVideo);
+      });
+
+      // Nút nạp mẫu hoạt động
+      document.getElementById('btnLoadSamples').addEventListener('click', loadSamples);
+    }
+
+    // --- 9. HIỂN THỊ THÔNG BÁO CUSTOM TOAST (TRÁNH DÙNG ALERT) ---
+    function showToast(message, type = "success") {
+      const toast = document.getElementById('toastNotification');
+      const text = document.getElementById('toastMessage');
+      const icon = document.getElementById('toastIcon');
+
+      text.textContent = message;
+      if (type === "success") {
+        icon.textContent = "🔔";
+        toast.firstElementChild.className = "bg-slate-900 border border-green-500/30 rounded-xl shadow-2xl px-4 py-3 flex items-center space-x-2 text-sm font-bold min-w-[280px] text-green-400";
+      } else if (type === "info") {
+        icon.textContent = "💡";
+        toast.firstElementChild.className = "bg-slate-900 border border-blue-500/30 rounded-xl shadow-2xl px-4 py-3 flex items-center space-x-2 text-sm font-bold min-w-[280px] text-blue-400";
+      } else {
+        icon.textContent = "⚠️";
+        toast.firstElementChild.className = "bg-slate-900 border border-red-500/30 rounded-xl shadow-2xl px-4 py-3 flex items-center space-x-2 text-sm font-bold min-w-[280px] text-red-400";
+      }
+
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
